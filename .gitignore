@@ -8,3 +8,4 @@ coverage/
 !.env.example
 .env
 node_modules
+dist
