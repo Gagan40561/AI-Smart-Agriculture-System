@@ -48,15 +48,26 @@ Designed to support data-driven decision making in agriculture by combining mult
 
 ### Crop Advisor
 
-![Crop Advisor](screenshots/crop-advisor.png)
+<img width="280" height="185" alt="image" src="https://github.com/user-attachments/assets/c77734a1-fd24-4360-8ce7-641cc9f5e952" />
+
 
 ### Disease Detection
 
-![Disease Detection](screenshots/disease.png)
+<img width="257" height="157" alt="image" src="https://github.com/user-attachments/assets/85a1ff2f-0aa1-4f60-b653-23c43b1a3664" />
+
+### Fertilizer Recommendation
+
+<img width="260" height="149" alt="image" src="https://github.com/user-attachments/assets/1974c52b-d310-4b05-8f3b-a28e09da74b1" />
+
 
 ### Market Trends
 
-![Market Trends](screenshots/market.png)
+<img width="255" height="145" alt="image" src="https://github.com/user-attachments/assets/a6289380-e443-4236-b168-a9166301eedd" />
+
+### AI Chat Bot
+
+<img width="259" height="275" alt="image" src="https://github.com/user-attachments/assets/8356c211-e1a1-41b3-9d75-5a381e42b722" />
+
 
 ## Live Demo
 
