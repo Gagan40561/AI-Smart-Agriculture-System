@@ -1,13 +1,14 @@
 # AI Smart Agriculture System
 
-Research-based AI Agriculture Platform for Precision Farming and Farmer Decision Support
+*Research-based AI Agriculture Platform for Precision Farming and Farmer Decision Support*
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://your-vercel-link.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://ai-smart-agriculture-system.vercel.app/)
 ![React](https://img.shields.io/badge/React-TypeScript-61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933)
 ![Firebase](https://img.shields.io/badge/Firebase-Backend-FFCA28)
 ![Gemini API](https://img.shields.io/badge/Gemini-API-4285F4)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC)
+![Vercel](https://img.shields.io/badge/Deployed-Vercel-black)
 
 An integrated precision agriculture platform that assists farmers through:
 
@@ -71,7 +72,8 @@ Designed to support data-driven decision making in agriculture by combining mult
 
 ## Live Demo
 
-https://your-vercel-link.vercel.app
+🔗 https://ai-smart-agriculture-system.vercel.app
+
 
 ## Getting Started
 
@@ -111,7 +113,7 @@ npm run dev
 * Chatbot assistance using AI knowledge services
 * Market trend analysis for price-aware planning
 
-## Project Purpose
+## Research Contribution
 
 This repository is prepared as a portfolio-grade implementation of an IEEE research project, highlighting practical AI integration for agriculture-focused decision support.
 
@@ -134,10 +136,3 @@ rag
 agritech
 -->
 
-## Commit and Push
-
-```bash
-git add .
-git commit -m "Enhanced README and portfolio documentation"
-git push
-```
