@@ -171,19 +171,42 @@ const getCachedMarketData = (cacheKey: string): MarketApiResponse | null => {
   };
 };
 
-async function startServer() {
+const getRuntimeDataFile = (fileName: string, defaultValue: unknown) => {
+  if (!process.env.VERCEL) {
+    return path.join(process.cwd(), fileName);
+  }
+
+  const dataDir = path.join('/tmp', 'smart-agriculture-ai');
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
+  const runtimeFile = path.join(dataDir, fileName);
+  const bundledFile = path.join(process.cwd(), fileName);
+
+  if (!fs.existsSync(runtimeFile)) {
+    if (fs.existsSync(bundledFile)) {
+      fs.copyFileSync(bundledFile, runtimeFile);
+    } else {
+      fs.writeFileSync(runtimeFile, JSON.stringify(defaultValue, null, 2));
+    }
+  }
+
+  return runtimeFile;
+};
+
+export async function createApp() {
   const app = express();
   app.set('trust proxy', 1);
-  const PORT = 3000;
   const JWT_SECRET = process.env.JWT_SECRET || 'smart-agri-secret-key-2026';
 
   app.use(express.json());
 
   // Persistence for users
-  const usersFile = path.join(process.cwd(), 'users.json');
-  const historyFile = path.join(process.cwd(), 'history.json');
-  const productsFile = path.join(process.cwd(), 'products.json');
-  const fertilizerHistoryFile = path.join(process.cwd(), 'fertilizer_history.json');
+  const usersFile = getRuntimeDataFile('users.json', {});
+  const historyFile = getRuntimeDataFile('history.json', []);
+  const productsFile = getRuntimeDataFile('products.json', []);
+  const fertilizerHistoryFile = getRuntimeDataFile('fertilizer_history.json', []);
 
   if (!fs.existsSync(usersFile)) {
     fs.writeFileSync(usersFile, JSON.stringify({}));
@@ -274,11 +297,12 @@ async function startServer() {
   };
 
   // Setup multer for image uploads
-  const upload = multer({ dest: 'uploads/' });
+  const uploadDir = process.env.VERCEL ? path.join('/tmp', 'smart-agriculture-ai-uploads') : 'uploads';
+  const upload = multer({ dest: uploadDir });
 
   // Ensure uploads directory exists
-  if (!fs.existsSync('uploads')) {
-    fs.mkdirSync('uploads');
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
   }
 
   // API Routes
@@ -484,7 +508,7 @@ async function startServer() {
 
       // Remove image if exists
       if (product.image) {
-        const imagePath = path.join(process.cwd(), product.image);
+        const imagePath = path.join(uploadDir, path.basename(product.image));
         if (fs.existsSync(imagePath)) {
           fs.unlinkSync(imagePath);
         }
@@ -501,7 +525,7 @@ async function startServer() {
   });
 
   // Serve uploaded files
-  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+  app.use('/uploads', express.static(uploadDir));
 
   // --- History Routes ---
   app.get('/api/history', authenticateToken, (req: any, res) => {
@@ -1016,14 +1040,15 @@ async function startServer() {
     res.status(404).json({ status: 'error', error: `API route not found: ${req.method} ${req.url}` });
   });
 
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== 'production') {
+  // Vite middleware for local development. Vercel serves the built frontend
+  // separately, so serverless API functions should only register API routes.
+  if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
     });
     app.use(vite.middlewares);
-  } else {
+  } else if (!process.env.VERCEL) {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
@@ -1031,9 +1056,18 @@ async function startServer() {
     });
   }
 
+  return app;
+}
+
+async function startServer() {
+  const PORT = Number(process.env.PORT) || 3000;
+  const app = await createApp();
+
   app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
