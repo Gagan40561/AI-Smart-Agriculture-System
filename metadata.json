@@ -1,0 +1,8 @@
+{
+  "name": "AI Smart Agriculture by Gagan P R",
+  "description": "AI-powered farming assistant providing crop recommendations, plant disease detection, fertilizer advice, and a farmer marketplace.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}

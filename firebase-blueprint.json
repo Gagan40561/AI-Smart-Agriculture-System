@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Firebase Auth UID" },
+        "identifier": { "type": "string", "description": "Email or Mobile number" },
+        "type": { "type": "string", "enum": ["email", "mobile"], "description": "Login method type" },
+        "name": { "type": "string", "description": "User's full name" },
+        "location": { "type": "string", "description": "User's location/city" },
+        "farmType": { "type": "string", "description": "Type of farm" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Account creation timestamp" }
+      },
+      "required": ["id", "identifier", "type", "createdAt"]
+    },
+    "History": {
+      "title": "History",
+      "description": "Farming activity history",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID" },
+        "type": { "type": "string", "enum": ["crop", "disease"], "description": "Type of analysis" },
+        "result": { "type": "string", "description": "Analysis result" },
+        "confidence": { "type": "number", "description": "Confidence score" },
+        "input": { "type": "object", "description": "Input parameters or image reference" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "Activity timestamp" }
+      },
+      "required": ["userId", "type", "result", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents"
+    },
+    "/history/{historyId}": {
+      "schema": "History",
+      "description": "Activity history documents"
+    }
+  }
+}

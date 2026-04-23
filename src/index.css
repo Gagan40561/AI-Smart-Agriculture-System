@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-brand-green: #22c55e;
+  --color-brand-green-dark: #16a34a;
+  --color-dark-bg: #0b0f19;
+  --color-dark-card: #111827;
+  --color-dark-input: #1f2937;
+  --color-dark-border: #1f2937;
+  --color-dark-accent: #22c55e;
+}
+
+body {
+  @apply bg-dark-bg text-stone-200 antialiased selection:bg-brand-green/30 selection:text-white;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-800 rounded-full hover:bg-stone-700 transition-colors;
+}
+
+input, select, textarea {
+  @apply bg-dark-input border-dark-border text-white focus:ring-2 focus:ring-brand-green/50 outline-none transition-all;
+}
+
+.glass-panel {
+  @apply bg-dark-card/80 backdrop-blur-md border border-dark-border;
+}
+
+.nav-item-active {
+  @apply text-brand-green bg-brand-green/10;
+}

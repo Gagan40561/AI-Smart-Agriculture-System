@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: userId (Firebase Auth UID)
+    // Fields:
+    //   - id: string (required) - Firebase Auth UID
+    //   - identifier: string (required) - Email or Mobile number
+    //   - type: string (required, enum: ['email', 'mobile'])
+    //   - name: string (optional)
+    //   - location: string (optional)
+    //   - farmType: string (optional)
+    //   - createdAt: string (required, ISO 8601)
+    //
+    // Collection: history
+    // Document ID: auto-generated
+    // Fields:
+    //   - userId: string (required) - Owner UID
+    //   - type: string (required, enum: ['crop', 'disease'])
+    //   - result: string (required)
+    //   - confidence: number (optional)
+    //   - input: map (optional)
+    //   - timestamp: string (required, ISO 8601)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return (request.auth != null && request.auth.uid == userId) || userId == 'demo-user-9999999999';
+    }
+
+    function isDocOwner() {
+      return (request.auth != null && request.auth.uid == resource.data.userId) || (resource != null && resource.data.userId == 'demo-user-9999999999');
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['id', 'identifier', 'type', 'createdAt']) &&
+             (data.id == 'demo-user-9999999999' || (isAuthenticated() && data.id == request.auth.uid)) &&
+             data.type in ['email', 'mobile'] &&
+             data.identifier is string &&
+             data.identifier.size() > 0 &&
+             data.identifier.size() < 100;
+    }
+
+    function isValidHistory(data) {
+      return data.keys().hasAll(['userId', 'type', 'result', 'timestamp']) &&
+             (data.userId == 'demo-user-9999999999' || (isAuthenticated() && data.userId == request.auth.uid)) &&
+             data.type in ['crop', 'disease'] &&
+             data.result is string &&
+             data.result.size() < 5000;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if userId == 'demo-user-9999999999' || (request.auth != null && request.auth.uid == userId);
+      allow create: if (userId == 'demo-user-9999999999' || (request.auth != null && request.auth.uid == userId)) && isValidUser(request.resource.data);
+      allow update: if (userId == 'demo-user-9999999999' || (request.auth != null && request.auth.uid == userId)) && isValidUser(request.resource.data);
+    }
+
+    match /history/{historyId} {
+      allow read: if (resource != null && resource.data.userId == 'demo-user-9999999999') || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow create: if (request.resource.data.userId == 'demo-user-9999999999' || (request.auth != null && request.resource.data.userId == request.auth.uid)) && isValidHistory(request.resource.data);
+      allow update: if false; // History should be immutable
+      allow delete: if (resource != null && resource.data.userId == 'demo-user-9999999999') || (request.auth != null && resource.data.userId == request.auth.uid);
+    }
+  }
+}

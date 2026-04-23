@@ -1,0 +1,248 @@
+[
+  {
+    "id": "67fe8bc9-0188-4eb5-8fa1-aa83ff0f8226",
+    "type": "disease",
+    "result": "Black Rot",
+    "confidence": 0.85,
+    "recommendations": [
+      "The leaf shows small, dark necrotic spots characteristic of early black rot infection in grapevines. These spots often start as tiny brown or black lesions and can expand, sometimes developing a lighter tan center with minute black fungal fruiting bodies. The surrounding leaf tissue exhibits some yellowing (chlorosis).",
+      "Prune and remove infected leaves and shoots to improve air circulation and reduce the source of fungal spores.",
+      "Apply preventative fungicides labeled for grapes, such as myclobutanil, mancozeb, or captan, especially during wet spring weather.",
+      "Practice good vineyard sanitation by removing 'mummified' fruit and fallen leaves from the previous season.",
+      "Maintain a weed-free area under the vines to further improve airflow and reduce humidity around the foliage."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-11T19:49:59.265Z"
+  },
+  {
+    "id": "a88f31db-e194-4e26-af9b-75b0dd46ee32",
+    "type": "disease",
+    "result": "Grape Black Rot",
+    "confidence": 0.85,
+    "recommendations": [
+      "The grape leaf exhibits small, circular to irregular necrotic spots that are dark brown to black in color. These lesions are characteristic of an early-to-mid stage infection of Black Rot, caused by the fungus Guignardia bidwellii.",
+      "Prune and destroy all infected plant parts to reduce the spread of fungal spores.",
+      "Ensure the vineyard is clear of mummified fruit from the previous season, as these are primary sources of inoculum.",
+      "Improve air circulation and sunlight exposure within the canopy through proper trellising and shoot thinning.",
+      "Apply preventative fungicides, such as myclobutanil or mancozeb, during the critical period from early bloom through four weeks after bloom."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-11T19:50:30.294Z"
+  },
+  {
+    "id": "19bee068-54e8-4883-94ac-8cb31c74fd52",
+    "type": "disease",
+    "result": "Apple Scab",
+    "confidence": 0.85,
+    "recommendations": [
+      "The leaf exhibits small, dark, olive-green to black velvety spots and some slight yellowing, which are primary symptoms of the fungal infection Apple Scab.",
+      "Rake and destroy fallen leaves and debris to remove overwintering fungal spores.",
+      "Prune trees to improve air circulation and allow sunlight to dry leaves quickly.",
+      "Apply preventative fungicides, such as sulfur or copper-based products, during the early spring as new growth emerges.",
+      "Choose disease-resistant apple cultivars for future plantings."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-11T19:52:11.264Z"
+  },
+  {
+    "id": "d14f5916-da06-4cbb-9ab0-754eb4148a2f",
+    "type": "disease",
+    "result": "Healthy",
+    "confidence": 0.95,
+    "recommendations": [
+      "The leaf appears healthy with uniform green coloration, no visible spots, lesions, or discolorations indicating disease.",
+      "No treatment required.",
+      "Maintain standard plant care practices, including proper watering and fertilization.",
+      "Continue to monitor plants regularly for any early signs of pests or disease."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-11T20:11:33.980Z"
+  },
+  {
+    "id": "79f037b6-7e8e-4f8e-bf7b-c559607513c3",
+    "type": "disease",
+    "result": "Tomato Yellow Leaf Curl Virus",
+    "confidence": 0.92,
+    "recommendations": [
+      "The leaf shows classic symptoms of TYLCV, including upward curling of the leaf margins, severe marginal and interveinal chlorosis (yellowing), and a reduced, stunted leaf size.",
+      "Monitor and control whitefly populations, as they are the primary vectors for this virus.",
+      "Remove and destroy infected plants immediately to prevent the virus from spreading.",
+      "Use yellow sticky traps to monitor for the presence of whiteflies.",
+      "Plant virus-resistant or tolerant tomato varieties in future seasons.",
+      "Maintain a weed-free zone around the garden to eliminate alternative hosts for the virus and whiteflies."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-12T05:39:03.412Z"
+  },
+  {
+    "id": "e874a5a3-2bd1-4d95-b8ed-d9a9a2fbe362",
+    "type": "disease",
+    "result": "Tomato Yellow Leaf Curl Virus (TYLCV)",
+    "confidence": 0.95,
+    "recommendations": [
+      "The leaf exhibits characteristic symptoms of TYLCV, including pronounced upward curling of the leaf margins, yellowing (chlorosis) along the edges, and significant deformation and stunting of the leaf tissue.",
+      "Manage whitefly populations (the primary vector) using insecticidal soaps, neem oil, or targeted insecticides.",
+      "Immediately remove and destroy any infected plants to prevent further spread of the virus to healthy ones.",
+      "Use yellow sticky traps to monitor and help reduce the number of adult whiteflies.",
+      "Apply reflective (silver-colored) mulches to repel whiteflies from the plants.",
+      "Remove weeds from around the planting area, as they can serve as alternative hosts for both the virus and the whitefly vector.",
+      "In future seasons, select and plant tomato varieties that are certified as resistant or tolerant to TYLCV."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-12T05:39:31.399Z"
+  },
+  {
+    "id": "e8b0a5eb-9c6e-4122-a9ee-8a0d6c2a5429",
+    "type": "disease",
+    "result": "Tomato Yellow Leaf Curl Virus (TYLCV)",
+    "confidence": 0.9,
+    "recommendations": [
+      "The leaf exhibits characteristic symptoms including upward curling of the margins, severe interveinal and marginal chlorosis (yellowing), and a generally stunted, crumpled appearance.",
+      "Implement strict whitefly control measures, as they are the primary vector for the virus.",
+      "Immediately remove and destroy infected plants to reduce the inoculum source.",
+      "Use yellow sticky traps to monitor and reduce whitefly populations.",
+      "Plant resistant or tolerant tomato varieties in areas where the virus is prevalent.",
+      "Utilize reflective mulches to deter whiteflies from landing on young plants."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-12T06:06:41.634Z"
+  },
+  {
+    "id": "2dbf0946-7505-4b36-87ad-6585243e662a",
+    "type": "disease",
+    "result": "Apple Scab",
+    "confidence": 0.85,
+    "recommendations": [
+      "The leaf shows small, dark, olive-green to brownish spots which are characteristic of the early stages of apple scab, a fungal disease caused by Venturia inaequalis.",
+      "Remove and destroy fallen leaves and debris around the tree to reduce overwintering fungal spores.",
+      "Prune the tree to improve air circulation and sunlight penetration within the canopy.",
+      "Apply preventative fungicides in the spring, particularly during wet and cool weather conditions."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-12T06:07:10.396Z"
+  },
+  {
+    "id": "c4740dcd-3ce4-4196-8dc0-d54508fb8710",
+    "type": "crop",
+    "result": "Inconclusive Data",
+    "confidence": 0.65,
+    "recommendations": [
+      "Please provide more precise soil measurements.",
+      "Consider testing soil at a certified lab."
+    ],
+    "input": {
+      "nitrogen": 100,
+      "phosphorus": 48,
+      "potassium": 45,
+      "temperature": 30,
+      "humidity": 75,
+      "ph": 10,
+      "rainfall": 220,
+      "location": "Yelahanka taluku"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-12T06:09:47.102Z"
+  },
+  {
+    "id": "d1ef6a29-53d9-4a8b-aa6e-bd780f2923c9",
+    "type": "crop",
+    "result": "Rice",
+    "confidence": 0.88,
+    "recommendations": [
+      "The combination of high Nitrogen levels, high humidity (75%), and significant rainfall (220mm) is characteristic of ideal conditions for paddy cultivation. While the pH of 8 is slightly alkaline, rice is adaptable to these conditions, especially given the abundant moisture which helps buffer soil alkalinity.",
+      "Incorporate organic manure or green manure to help neutralize the high soil pH and improve soil structure.",
+      "Utilize zinc-coated urea to prevent micronutrient deficiency, as Zinc availability often decreases in alkaline soils.",
+      "Implement effective water management strategies to leverage the high rainfall while preventing stagnant water issues during specific growth stages."
+    ],
+    "input": {
+      "nitrogen": 100,
+      "phosphorus": 43,
+      "potassium": 42,
+      "temperature": 30,
+      "humidity": 75,
+      "ph": 8,
+      "rainfall": 220,
+      "location": "Yelahanka taluku"
+    },
+    "userId": "224797ac-2a0b-4316-8280-8e8c6b71f1b9",
+    "timestamp": "2026-04-12T06:10:38.175Z"
+  },
+  {
+    "id": "a754d9b8-9e4d-44d0-9745-1b31a2b736dc",
+    "type": "disease",
+    "result": "Apple Scab",
+    "confidence": 0.95,
+    "recommendations": [
+      "Dark, velvety, olive-green to black irregular spots on the leaf surface, often clustered along the veins, which is characteristic of the fungal infection Venturia inaequalis.",
+      "Rake up and dispose of fallen leaves in the autumn to reduce overwintering fungal spores.",
+      "Prune the tree to improve air circulation and allow sunlight to reach the inner canopy.",
+      "Apply preventative fungicides during the growing season, particularly from bud break through mid-summer.",
+      "In future plantings, consider using scab-resistant apple cultivars."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "204ca221-2ed2-45de-a351-4d5001da8c2f",
+    "timestamp": "2026-04-12T07:25:50.860Z"
+  },
+  {
+    "id": "67eb3b01-4ff3-4e11-a2c3-b52a79bb3408",
+    "type": "disease",
+    "result": "Apple Scab",
+    "confidence": 0.95,
+    "recommendations": [
+      "The leaf exhibits dark, velvety, olive-green to black spots which are characteristic of Apple Scab, caused by the fungus Venturia inaequalis. These lesions can eventually cause the leaf to turn yellow and drop prematurely.",
+      "Remove and destroy fallen leaves to reduce the source of fungal spores.",
+      "Prune the tree canopy to improve airflow and allow for quicker drying of the leaves.",
+      "Apply appropriate fungicides, such as captan or sulfur-based treatments, starting in early spring at bud break.",
+      "Plant scab-resistant apple cultivars to prevent future outbreaks."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "204ca221-2ed2-45de-a351-4d5001da8c2f",
+    "timestamp": "2026-04-12T07:30:52.452Z"
+  },
+  {
+    "id": "4ccb5af1-4d40-4780-b110-ccff4ce3ddca",
+    "type": "disease",
+    "result": "Apple Scab",
+    "confidence": 0.95,
+    "recommendations": [
+      "The leaf shows characteristic dark, olive-colored to black, velvety spots on the upper surface. This is a common fungal disease caused by Venturia inaequalis.",
+      "Rake and destroy fallen leaves in the autumn to reduce the amount of overwintering fungal spores.",
+      "Prune the tree to improve air circulation, which helps foliage dry faster and discourages fungal growth.",
+      "Apply preventative fungicides early in the growing season, typically from 'green tip' stage through mid-summer.",
+      "When planting new trees, select apple varieties that are bred for resistance to apple scab."
+    ],
+    "input": {
+      "image": "Uploaded Image"
+    },
+    "userId": "204ca221-2ed2-45de-a351-4d5001da8c2f",
+    "timestamp": "2026-04-12T07:31:22.541Z"
+  }
+]

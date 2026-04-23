@@ -1,0 +1,38 @@
+[
+  {
+    "id": "crop_rec_1",
+    "topic": "Crop Recommendation",
+    "content": "For black soil with high moisture retention, cotton and soybean are highly recommended. Cotton requires a temperature range of 21-30°C and rainfall of 50-100cm. Soybean thrives in 15-32°C with 60-100cm rainfall. Ensure proper drainage to avoid waterlogging.",
+    "keywords": ["black soil", "cotton", "soybean", "moisture", "drainage"]
+  },
+  {
+    "id": "disease_1",
+    "topic": "Plant Diseases",
+    "content": "Tomato Early Blight is caused by the fungus Alternaria solani. Symptoms include small, brown spots with concentric rings on older leaves. Treatment: Apply copper-based fungicides or Mancozeb. Prevention: Rotate crops, remove infected debris, and avoid overhead irrigation.",
+    "keywords": ["tomato", "early blight", "fungus", "brown spots", "fungicide"]
+  },
+  {
+    "id": "pest_1",
+    "topic": "Pest Control",
+    "content": "Fall Armyworm (FAW) is a major pest for maize. It feeds on leaves, causing large ragged holes. Control: Use Neem-based pesticides or Bacillus thuringiensis (Bt). Pheromone traps can help in early detection. Intercropping with legumes like cowpea can reduce infestation.",
+    "keywords": ["maize", "fall armyworm", "pest", "neem", "pesticide"]
+  },
+  {
+    "id": "fertilizer_1",
+    "topic": "Fertilizer Usage",
+    "content": "For Rice (Paddy), the recommended NPK ratio is usually 120:60:60 kg/ha. Apply Nitrogen in three split doses: at transplanting, tillering, and panicle initiation. Phosphorus and Potassium should be applied as a basal dose during transplanting.",
+    "keywords": ["rice", "paddy", "npk", "nitrogen", "phosphorus", "potassium"]
+  },
+  {
+    "id": "irrigation_1",
+    "topic": "Irrigation Planning",
+    "content": "Drip irrigation is most efficient for fruit crops like Pomegranate and Grapes, saving up to 40-50% water. For wheat, critical stages for irrigation are Crown Root Initiation (CRI), tillering, and flowering. Avoid irrigation during high winds to prevent lodging.",
+    "keywords": ["drip irrigation", "water saving", "wheat", "pomegranate", "grapes"]
+  },
+  {
+    "id": "scheme_1",
+    "topic": "Government Schemes",
+    "content": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi) provides Rs. 6,000 per year in three equal installments to small and marginal farmers. PMFBY (Pradhan Mantri Fasal Bima Yojana) offers crop insurance against natural calamities, pests, and diseases with low premium rates.",
+    "keywords": ["pm-kisan", "pmfby", "insurance", "subsidy", "financial aid"]
+  }
+]
