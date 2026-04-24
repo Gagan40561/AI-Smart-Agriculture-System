@@ -393,10 +393,16 @@ export async function createApp() {
   // --- Marketplace (Farmer Self-Marketing) ---
   app.post('/api/products', authenticateToken, upload.single('image'), (req: any, res) => {
     try {
-      const { name, category, quantity, price, location, description } = req.body;
+      const { name, category, quantity, price, location, description, contactNumber, stockQuantity } = req.body;
 
-      if (!name || !category || !quantity || !price || !location) {
+      if (!name || !category || !quantity || !price || !location || !contactNumber || stockQuantity === undefined) {
         return res.status(400).json({ status: 'error', error: 'Missing required fields' });
+      }
+      if (Number(price) <= 0) {
+        return res.status(400).json({ status: 'error', error: 'Price must be greater than 0' });
+      }
+      if (Number(stockQuantity) < 0 || !Number.isFinite(Number(stockQuantity))) {
+        return res.status(400).json({ status: 'error', error: 'Stock quantity must be 0 or more' });
       }
 
       const products = getProducts();
@@ -411,7 +417,12 @@ export async function createApp() {
         image: req.file ? `/uploads/${req.file.filename}` : null,
         sellerId: req.user.userId,
         sellerName: req.user.identifier, // Simplified
-        createdAt: new Date().toISOString()
+        contactNumber,
+        stockQuantity: Number(stockQuantity),
+        isSoldOut: Number(stockQuantity) === 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: null,
+        priceUpdatedAt: null
       };
 
       products.push(newProduct);
@@ -496,6 +507,74 @@ export async function createApp() {
     }
   });
 
+  app.put('/api/products/:id', authenticateToken, upload.single('image'), (req: any, res) => {
+    try {
+      const { name, category, quantity, price, location, description, contactNumber, stockQuantity } = req.body;
+      let products = getProducts();
+      const productIndex = products.findIndex((p: any) => p.productId === req.params.id);
+
+      if (productIndex === -1) {
+        return res.status(404).json({ status: 'error', error: 'Product not found' });
+      }
+
+      const existingProduct = products[productIndex];
+      if (existingProduct.sellerId !== req.user.userId) {
+        return res.status(403).json({ status: 'error', error: 'Unauthorized to edit this product' });
+      }
+
+      if (!name || !category || !quantity || !price || !location || !contactNumber || stockQuantity === undefined) {
+        return res.status(400).json({ status: 'error', error: 'Missing required fields' });
+      }
+      if (Number(price) <= 0) {
+        return res.status(400).json({ status: 'error', error: 'Price must be greater than 0' });
+      }
+      if (Number(stockQuantity) < 0 || !Number.isFinite(Number(stockQuantity))) {
+        return res.status(400).json({ status: 'error', error: 'Stock quantity must be 0 or more' });
+      }
+
+      const normalizedPrice = Number(price);
+      const normalizedStockQuantity = Number(stockQuantity);
+      const updateTimestamp = new Date().toISOString();
+
+      let image = existingProduct.image || null;
+      if (req.file) {
+        if (existingProduct.image) {
+          const oldImagePath = path.join(uploadDir, path.basename(existingProduct.image));
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        }
+        image = `/uploads/${req.file.filename}`;
+      }
+
+      const updatedProduct = {
+        ...existingProduct,
+        name,
+        category,
+        quantity,
+        price: normalizedPrice,
+        location,
+        description,
+        contactNumber,
+        stockQuantity: normalizedStockQuantity,
+        isSoldOut: normalizedStockQuantity === 0,
+        image,
+        updatedAt: updateTimestamp,
+        priceUpdatedAt: existingProduct.price !== normalizedPrice
+          ? updateTimestamp
+          : existingProduct.priceUpdatedAt || null
+      };
+
+      products[productIndex] = updatedProduct;
+      saveProducts(products);
+
+      res.json({ status: 'ok', product: updatedProduct, message: 'Product updated successfully' });
+    } catch (error) {
+      console.error('[API] Update product error:', error);
+      res.status(500).json({ status: 'error', error: 'Failed to update product' });
+    }
+  });
+
   app.delete('/api/products/:id', authenticateToken, (req: any, res) => {
     try {
       let products = getProducts();
@@ -521,6 +600,57 @@ export async function createApp() {
     } catch (error) {
       console.error('[API] Delete product error:', error);
       res.json({ status: 'ok', fallback: true, message: 'Failed to delete product' });
+    }
+  });
+
+  app.patch('/api/products/:id/inventory', authenticateToken, (req: any, res) => {
+    try {
+      const { action } = req.body;
+      let products = getProducts();
+      const productIndex = products.findIndex((p: any) => p.productId === req.params.id);
+
+      if (productIndex === -1) {
+        return res.status(404).json({ status: 'error', error: 'Product not found' });
+      }
+
+      const existingProduct = products[productIndex];
+      if (existingProduct.sellerId !== req.user.userId) {
+        return res.status(403).json({ status: 'error', error: 'Unauthorized to update inventory' });
+      }
+
+      let stockQuantity = Number(existingProduct.stockQuantity ?? 0);
+      let isSoldOut = !!existingProduct.isSoldOut;
+
+      if (action === 'decrement') {
+        if (stockQuantity <= 0) {
+          return res.status(400).json({ status: 'error', error: 'Listing is already out of stock' });
+        }
+        stockQuantity -= 1;
+        isSoldOut = stockQuantity === 0;
+      } else if (action === 'sold-out') {
+        stockQuantity = 0;
+        isSoldOut = true;
+      } else if (action === 'reactivate') {
+        stockQuantity = Math.max(stockQuantity, 1);
+        isSoldOut = false;
+      } else {
+        return res.status(400).json({ status: 'error', error: 'Invalid inventory action' });
+      }
+
+      const updatedProduct = {
+        ...existingProduct,
+        stockQuantity,
+        isSoldOut,
+        updatedAt: new Date().toISOString()
+      };
+
+      products[productIndex] = updatedProduct;
+      saveProducts(products);
+
+      res.json({ status: 'ok', product: updatedProduct, message: 'Inventory updated successfully' });
+    } catch (error) {
+      console.error('[API] Inventory update error:', error);
+      res.status(500).json({ status: 'error', error: 'Failed to update inventory' });
     }
   });
 
