@@ -1,6 +1,30 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+const getGeminiApiKey = () => {
+  const viteKey = import.meta.env?.VITE_GEMINI_API_KEY;
+  const serverKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  return viteKey || serverKey || '';
+};
+
+let aiClient: GoogleGenAI | null = null;
+
+const getGeminiClient = () => {
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) {
+    return null;
+  }
+
+  if (!aiClient) {
+    aiClient = new GoogleGenAI({ apiKey });
+  }
+
+  return aiClient;
+};
+
+const isGeminiKeyError = (error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes('API_KEY_INVALID') || message.includes('API key') || message.includes('API_KEY');
+};
 
 export interface CropInput {
   nitrogen: number;
@@ -20,6 +44,47 @@ export interface PredictionResult {
   recommendations: string[];
 }
 
+const getFallbackCropRecommendation = (input: CropInput, reason: string): PredictionResult => {
+  const isAcidic = input.ph < 6;
+  const isAlkaline = input.ph > 7.8;
+  const isWet = input.rainfall >= 180 || input.humidity >= 75;
+  const isDry = input.rainfall < 80 || input.humidity < 45;
+  const isCool = input.temperature < 20;
+  const isHot = input.temperature > 32;
+
+  let crop = 'Maize';
+  let rationale = 'Balanced soil and moderate weather conditions are suitable for maize or similar cereal crops.';
+
+  if (isWet && !isAlkaline) {
+    crop = 'Rice';
+    rationale = 'High rainfall or humidity favors water-intensive crops like rice.';
+  } else if (isDry || isHot) {
+    crop = 'Millet';
+    rationale = 'Dry or hot conditions favor drought-tolerant crops like millet.';
+  } else if (isCool) {
+    crop = 'Wheat';
+    rationale = 'Cooler temperatures are suitable for wheat and other rabi crops.';
+  } else if (isAcidic) {
+    crop = 'Potato';
+    rationale = 'Slightly acidic soil can support potato when moisture is managed well.';
+  } else if (isAlkaline) {
+    crop = 'Cotton';
+    rationale = 'Mildly alkaline soil and warm conditions can support cotton with proper irrigation.';
+  }
+
+  return {
+    type: 'crop',
+    result: crop,
+    confidence: 0.72,
+    recommendations: [
+      `${reason} Using a local rule-based recommendation instead.`,
+      rationale,
+      'Verify with a local soil test before final sowing decisions.',
+      'Keep nitrogen, phosphorus, and potassium balanced for the chosen crop.'
+    ]
+  };
+};
+
 export const agricultureService = {
   async recommendCrop(input: CropInput): Promise<PredictionResult> {
     const prompt = `As an expert agricultural scientist, recommend the best crop based on these soil and environmental parameters${input.location ? ` for the region of ${input.location}` : ''}:
@@ -38,6 +103,12 @@ export const agricultureService = {
       "reasoning": "Brief explanation",
       "recommendations": ["Actionable tip 1", "Actionable tip 2"]
     }`;
+
+    const ai = getGeminiClient();
+    if (!ai) {
+      console.warn('Gemini API key is not configured. Set VITE_GEMINI_API_KEY for the Vite frontend or GEMINI_API_KEY for server-side usage.');
+      return getFallbackCropRecommendation(input, 'Gemini is not configured.');
+    }
 
     try {
       const response = await ai.models.generateContent({
@@ -66,7 +137,10 @@ export const agricultureService = {
       };
     } catch (error) {
       console.error("Crop recommendation error:", error);
-      throw new Error("Failed to get crop recommendation.");
+      if (isGeminiKeyError(error)) {
+        return getFallbackCropRecommendation(input, 'Gemini rejected the configured API key.');
+      }
+      return getFallbackCropRecommendation(input, 'Gemini is temporarily unavailable.');
     }
   },
 
@@ -79,6 +153,19 @@ export const agricultureService = {
       "description": "Brief description of the symptoms",
       "treatment": ["Treatment step 1", "Treatment step 2"]
     }`;
+
+    const ai = getGeminiClient();
+    if (!ai) {
+      return {
+        type: 'disease',
+        result: 'AI Diagnosis Unavailable',
+        confidence: 0,
+        recommendations: [
+          'Gemini is not configured. Set VITE_GEMINI_API_KEY for the frontend build or GEMINI_API_KEY for server-side usage.',
+          'Retake the photo in clear daylight and consult a local agronomist for a confirmed diagnosis.'
+        ]
+      };
+    }
 
     try {
       const response = await ai.models.generateContent({
@@ -110,6 +197,17 @@ export const agricultureService = {
       };
     } catch (error) {
       console.error("Disease detection error:", error);
+      if (isGeminiKeyError(error)) {
+        return {
+          type: 'disease',
+          result: 'AI Diagnosis Unavailable',
+          confidence: 0,
+          recommendations: [
+            'Gemini rejected the configured API key. Check the Render environment variable value.',
+            'For now, monitor the plant closely and ask a local expert if symptoms spread.'
+          ]
+        };
+      }
       throw new Error("Failed to detect plant disease.");
     }
   },
@@ -118,6 +216,11 @@ export const agricultureService = {
     const dataSummary = marketData.map(d => `${d.commodity}: ₹${d.modal_price} (${d.trend > 0 ? '+' : ''}${d.trend}%)`).join(', ');
     const prompt = `As an agricultural market analyst, provide a concise (2-3 sentences) market insight based on the following real-time crop price trends in India: ${dataSummary}. 
     Focus on which crops are good to sell, which to hold, and any significant price movements.`;
+
+    const ai = getGeminiClient();
+    if (!ai) {
+      return "AI insights are unavailable because Gemini is not configured. Review the listed market prices directly and prefer selling crops with positive price trends.";
+    }
 
     try {
       const response = await ai.models.generateContent({

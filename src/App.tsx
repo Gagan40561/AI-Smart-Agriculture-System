@@ -88,11 +88,11 @@ function TabPanel({
   active: boolean;
   children: React.ReactNode;
 }) {
-  return (
-    <div hidden={!active} aria-hidden={!active}>
-      {children}
-    </div>
-  );
+  if (!active) {
+    return null;
+  }
+
+  return <div>{children}</div>;
 }
 
 type Tab = UIActiveTab;
@@ -1148,8 +1148,8 @@ export function AppContent() {
                       </div>
                     </div>
                     
-                    <div className="h-64 w-full min-h-[256px]">
-                      <ResponsiveContainer width="100%" height="100%">
+                    <div className="h-64 w-full min-h-[256px]" style={{ height: 256 }}>
+                      <ResponsiveContainer width="100%" height={256} minWidth={1} minHeight={1}>
                         <LineChart data={appData.selectedMarketCrop.history}>
                           <CartesianGrid strokeDasharray="3 3" stroke="#2d323d" vertical={false} />
                           <XAxis 
@@ -1181,8 +1181,8 @@ export function AppContent() {
                 {appData.market && appData.market.length > 0 && (
                   <div className="bg-dark-card p-6 rounded-3xl border border-dark-border">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-stone-500 mb-4">Price Comparison (₹/Quintal)</h3>
-                    <div className="h-48 w-full min-h-[192px]">
-                      <ResponsiveContainer width="100%" height="100%">
+                    <div className="h-48 w-full min-h-[192px]" style={{ height: 192 }}>
+                      <ResponsiveContainer width="100%" height={192} minWidth={1} minHeight={1}>
                         <BarChart data={appData.market.slice(0, 5)}>
                           <XAxis dataKey="commodity" stroke="#57534e" fontSize={10} />
                           <YAxis stroke="#57534e" fontSize={10} />

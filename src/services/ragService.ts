@@ -1,7 +1,26 @@
 import { GoogleGenAI } from "@google/genai";
 import agricultureKnowledge from '../data/agriculture_knowledge.json';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+const getGeminiApiKey = () => {
+  const viteKey = import.meta.env?.VITE_GEMINI_API_KEY;
+  const serverKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  return viteKey || serverKey || '';
+};
+
+let aiClient: GoogleGenAI | null = null;
+
+const getGeminiClient = () => {
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) {
+    return null;
+  }
+
+  if (!aiClient) {
+    aiClient = new GoogleGenAI({ apiKey });
+  }
+
+  return aiClient;
+};
 
 interface KnowledgeChunk {
   id: string;
@@ -57,6 +76,11 @@ const saveEmbeddingsToCache = () => {
 // Initialize embeddings for the knowledge base
 export const initKnowledgeBase = async () => {
   console.log("Initializing knowledge base embeddings...");
+  const ai = getGeminiClient();
+  if (!ai) {
+    console.warn("Gemini API key is not configured. Skipping knowledge base embeddings.");
+    return;
+  }
   
   // 1. Load from cache first
   loadCachedEmbeddings();
@@ -155,6 +179,18 @@ const cosineSimilarity = (vecA: number[], vecB: number[]) => {
 
 // Retrieve top-k chunks
 const retrieveChunks = async (query: string, k: number = 2) => {
+  const ai = getGeminiClient();
+  if (!ai) {
+    const queryTokens = query.toLowerCase().split(/\W+/).filter(Boolean);
+    return knowledgeBase
+      .map(chunk => ({
+        ...chunk,
+        score: chunk.keywords.filter(keyword => queryTokens.includes(keyword.toLowerCase())).length
+      }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, k);
+  }
+
   let retries = 3;
   while (retries > 0) {
     try {
@@ -199,6 +235,15 @@ export const generateChatResponse = async (query: string, history: any[] = []) =
   // 1. Retrieve relevant context
   const relevantChunks = await retrieveChunks(query);
   const context = relevantChunks.map(c => c.content).join("\n\n");
+  const ai = getGeminiClient();
+
+  if (!ai) {
+    if (context) {
+      return `Gemini is not configured right now, but I found this from the local agriculture guide:\n\n${context}`;
+    }
+
+    return "Gemini is not configured right now. Please set VITE_GEMINI_API_KEY for the frontend build or GEMINI_API_KEY for server-side usage, then redeploy.";
+  }
 
   // 2. Detect intent and generate response
   const systemInstruction = `You are a helpful AI Farmer Assistant for the "Smart Agriculture" app. 
