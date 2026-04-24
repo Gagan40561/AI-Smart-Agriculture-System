@@ -2,7 +2,7 @@
 
 *Research-Based AI Platform for Precision Agriculture and Farmer Decision Support*
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://ai-smart-agriculture-system-1.onrender.com)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://ai-smart-agriculture-system.onrender.com)
 ![Deployment](https://img.shields.io/badge/Deployment-Render-success)
 ![React](https://img.shields.io/badge/React-TypeScript-61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-339933)
@@ -83,7 +83,7 @@ Decision Support for Farmers
 
 ## Live Demo
 
-https://ai-smart-agriculture-system-1.onrender.com
+https://ai-smart-agriculture-system.onrender.com
 
 ## Getting Started
 
